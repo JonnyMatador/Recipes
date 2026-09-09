@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overnight-Oats Mittags-Bowl · Rezepte &amp; Einkauf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #2b2a27;
+    --bg-elevated: #35332f;
+    --bg-input: #403e39;
+    --text: #f2ede2;
+    --text-muted: #b8b0a0;
+    --border: rgba(242, 237, 226, 0.14);
+    --accent-berry: #b85678;
+    --accent-gold: #d4a73b;
+    --accent-sage: #8ba07c;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Newsreader", serif;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  a { color: var(--accent-gold); }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  header.page-head {
+    margin-bottom: 2.25rem;
+  }
+
+  header.page-head h1 {
+    font-size: 1.9rem;
+    font-style: italic;
+  }
+
+  header.page-head p {
+    color: var(--text-muted);
+    margin: 0.5rem 0 0;
+    max-width: 46ch;
+  }
+
+  nav.tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin: 2rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav.tabs button {
+    font: inherit;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.95rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.6rem 0.1rem;
+    margin-right: 1.5rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+
+  nav.tabs button[aria-selected="true"] {
+    color: var(--text);
+    border-bottom-color: var(--accent-gold);
+  }
+
+  nav.tabs button:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  section.view { display: none; }
+  section.view.active { display: block; }
+
+  /* ---- Recipes ---- */
+
+  .recipe {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    border-top: 3px solid var(--accent-color, var(--accent-gold));
+    padding: 1.5rem 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .recipe h2 {
+    font-size: 1.35rem;
+  }
+
+  .recipe .days {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .recipe .days span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+  }
+
+  .macros {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1rem 0 1.4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .macros div { font-size: 0.85rem; color: var(--text-muted); }
+  .macros strong { display: block; color: var(--text); font-size: 1.05rem; font-weight: 600; }
+
+  .recipe h3 {
+    font-size: 0.78rem;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 1.4rem 0 0.6rem;
+  }
+
+  .ingredient-list { border-top: 1px solid var(--border); }
+
+  .ingredient-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.94rem;
+  }
+
+  .ingredient-row span:last-child {
+    color: var(--text-muted);
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .steps { margin: 0; padding-left: 1.3rem; }
+  .steps li { margin-bottom: 0.55rem; font-size: 0.94rem; }
+  .steps li::marker { color: var(--accent-color, var(--accent-gold)); font-weight: 600; }
+
+  .note {
+    margin-top: 1.3rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ---- Shopping list ---- */
+
+  .shop-group { margin-bottom: 2rem; }
+
+  .shop-group h3 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shop-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shop-item input[type="checkbox"] {
+    margin-top: 0.3rem;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-sage);
+    flex-shrink: 0;
+  }
+
+  .shop-item label {
+    flex: 1;
+    font-size: 0.94rem;
+    cursor: pointer;
+  }
+
+  .shop-item.checked label { color: var(--text-muted); text-decoration: line-through; }
+
+  .shop-item .meta {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+  }
+
+  .shop-item .price {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .totals {
+    display: flex;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .totals div strong {
+    display: block;
+    font-size: 1.15rem;
+    font-family: "Newsreader", serif;
+  }
+
+  .totals div span { font-size: 0.82rem; color: var(--text-muted); }
+
+  .own-stock {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0.5rem 0 2rem;
+  }
+
+  .reset-btn {
+    font: inherit;
+    font-size: 0.85rem;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius);
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+  }
+
+  .reset-btn:hover { color: var(--text); border-color: var(--text-muted); }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <h1>Overnight-Oats Mittags-Bowl</h1>
+    <p>Rezepte und Einkaufsliste für den wöchentlichen Meal-Prep. Wird laufend um neue Varianten ergänzt.</p>
+    <p class="note" style="margin-top: 0.9rem;">Tipp: Für eine cremigere Konsistenz ein kleineres, hohes Gefäss (ca. 500–600 ml) statt einer breiten flachen Schale verwenden.</p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-view="recipes">Rezepte</button>
+    <button role="tab" aria-selected="false" data-view="shopping">Einkaufsliste</button>
+  </nav>
+
+  <section id="recipes" class="view active"></section>
+  <section id="shopping" class="view"></section>
+
+  <footer>
+    Neue Rezepte werden hier ergänzt, sobald sie getestet sind.
+  </footer>
+
+</div>
+
+<script>
+  /* ============================================================
+     REZEPTE
+     Neues Rezept hinzufügen: einfach ein weiteres Objekt in dieses
+     Array einfügen. Erscheint automatisch als Karte oben.
+     accent: "gold" | "berry" | "sage"
+     ============================================================ */
+  const RECIPES = [
+    {
+      id: "beeren-vanille",
+      title: "Beeren-Vanille Mittags-Bowl",
+      days: ["Mo", "Mi", "Fr"],
+      accent: "berry",
+      kcal: 568,
+      protein: 61,
+      fibre: 16,
+      ingredients: [
+        { name: "Haferflocken", amount: "55 g" },
+        { name: "Magerquark oder Skyr", amount: "200 g" },
+        { name: "Whey Protein (Pulver)", amount: "20 g" },
+        { name: "Chiasamen", amount: "1 EL" },
+        { name: "Flohsamenschalen", amount: "4 g" },
+        { name: "Beeren, TK, gemischt", amount: "80 g" },
+        { name: "High Protein Milk, Nature", amount: "120 ml" },
+        { name: "Zimt (oder 1 TL Chunky Milchreis-Zimt)", amount: "1 Prise" }
+      ],
+      steps: [
+        "Haferflocken, Whey Protein, Chiasamen, Flohsamenschalen und Zimt (oder Chunky) in einer Schüssel vermischen.",
+        "Magerquark/Skyr und High Protein Milk dazugeben, gründlich verrühren.",
+        "Beeren unterheben.",
+        "Abgedeckt mindestens 6–8 Stunden im Kühlschrank ziehen lassen."
+      ],
+      note: "Trockenmischung lässt sich für alle 5 Wochenportionen auf einmal zubereiten und danach auf die Behälter verteilen."
+    },
+    {
+      id: "schoko-bananen",
+      title: "Schoko-Bananen Mittags-Bowl",
+      days: ["Di", "Do"],
+      accent: "gold",
+      kcal: 573,
+      protein: 61,
+      fibre: 16,
+      ingredients: [
+        { name: "Haferflocken", amount: "55 g" },
+        { name: "Magerquark oder Skyr", amount: "200 g" },
+        { name: "Whey Protein (Pulver)", amount: "20 g" },
+        { name: "Chiasamen", amount: "1 EL" },
+        { name: "Flohsamenschalen", amount: "4 g" },
+        { name: "Kakaopulver, ungesüsst", amount: "1 EL" },
+        { name: "Banane, in Scheiben", amount: "1/2 Stück" },
+        { name: "High Protein Milk, Nature", amount: "120 ml" },
+        { name: "Zimt (oder 1 TL Chunky Milchreis-Zimt)", amount: "1 Prise" }
+      ],
+      steps: [
+        "Haferflocken, Whey Protein, Chiasamen, Flohsamenschalen, Kakaopulver und Zimt (oder Chunky) vermischen.",
+        "Magerquark/Skyr und High Protein Milk dazugeben, gründlich verrühren.",
+        "Bananenscheiben unterheben oder obenauf legen.",
+        "Abgedeckt mindestens 6–8 Stunden im Kühlschrank ziehen lassen."
+      ],
+      note: "Gleiche Trockenmischung wie bei der Beeren-Variante, einfach Kakao und Banane statt Beeren."
+    }
+  ];
+
+  /* ============================================================
+     EINKAUFSLISTE
+     "frisch" = jede Woche neu kaufen. "vorrat" = hält mehrere
+     Wochen, seltener nachkaufen. "eigenerVorrat" = nicht bei
+     Migros, bereits vorhanden.
+     Neues Produkt hinzufügen: Objekt mit name/package/price
+     in die passende Liste einfügen — Summen aktualisieren sich
+     automatisch.
+     ============================================================ */
+  const SHOPPING = {
+    frisch: [
+      { id: "quark", name: "M-Budget Magerquark", package: "4× 250g", price: 3.80 },
+      { id: "beeren", name: "Migros Beerenmischung, TK", package: "1× 450g", price: 3.32 },
+      { id: "bananen", name: "M-Budget Bananen", package: "~250g, lose", price: 0.30 },
+      { id: "milk", name: "Migros High Protein Milk, Nature", package: "1× 1L", price: 2.40 }
+    ],
+    vorrat: [
+      { id: "hafer", name: "M-Classic Vollkorn-Haferflöckli", package: "1kg — reicht ~4 Wochen", price: 1.40 },
+      { id: "chia", name: "Chia-Samen", package: "200g — reicht ~3 Wochen", price: 2.30 },
+      { id: "floh", name: "Flohsamenschalen", package: "110g — reicht ~5 Wochen", price: 3.50 },
+      { id: "kakao", name: "Patissier Kakaopulver", package: "200g — reicht Monate", price: 3.20 },
+      { id: "zimt", name: "M-Classic Zimt, gemahlen", package: "32g — reicht Monate", price: 0.45 }
+    ],
+    eigenerVorrat: [
+      "Whey Protein (eigene Marke, nicht bei Migros)",
+      "More Chunky, Milchreis-Zimt (bereits vorhanden)"
+    ]
+  };
+
+  /* ---------------- Rendering ---------------- */
+
+  function renderRecipes() {
+    const el = document.getElementById("recipes");
+    el.innerHTML = RECIPES.map(r => `
+      <article class="recipe" style="--accent-color: var(--accent-${r.accent})">
+        <h2>${r.title}</h2>
+        <div class="days">${r.days.map(d => `<span>${d}</span>`).join("")}</div>
+        <div class="macros">
+          <div><strong>${r.kcal}</strong>kcal</div>
+          <div><strong>${r.protein} g</strong>Protein</div>
+          <div><strong>${r.fibre} g</strong>Fibre</div>
+        </div>
+        <h3>Zutaten</h3>
+        <div class="ingredient-list">
+          ${r.ingredients.map(i => `
+            <div class="ingredient-row"><span>${i.name}</span><span>${i.amount}</span></div>
+          `).join("")}
+        </div>
+        <h3>Zubereitung</h3>
+        <ol class="steps">
+          ${r.steps.map(s => `<li>${s}</li>`).join("")}
+        </ol>
+        ${r.note ? `<p class="note">${r.note}</p>` : ""}
+      </article>
+    `).join("");
+  }
+
+  function loadChecked() {
+    try {
+      return JSON.parse(localStorage.getItem("oats-shopping-checked") || "{}");
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveChecked(state) {
+    try {
+      localStorage.setItem("oats-shopping-checked", JSON.stringify(state));
+    } catch (e) { /* ignore */ }
+  }
+
+  function renderShopping() {
+    const checked = loadChecked();
+
+    function itemRow(item) {
+      const isChecked = !!checked[item.id];
+      return `
+        <div class="shop-item ${isChecked ? "checked" : ""}" data-id="${item.id}">
+          <input type="checkbox" id="chk-${item.id}" ${isChecked ? "checked" : ""}>
+          <label for="chk-${item.id}">
+            ${item.name}
+            <span class="meta">${item.package}</span>
+          </label>
+          <span class="price">${item.price.toFixed(2)} CHF</span>
+        </div>
+      `;
+    }
+
+    const frischTotal = SHOPPING.frisch.reduce((s, i) => s + i.price, 0);
+    const vorratTotal = SHOPPING.vorrat.reduce((s, i) => s + i.price, 0);
+
+    const el = document.getElementById("shopping");
+    el.innerHTML = `
+      <div class="totals">
+        <div><strong>${frischTotal.toFixed(2)} CHF</strong><span>frisch, pro Woche</span></div>
+        <div><strong>${vorratTotal.toFixed(2)} CHF</strong><span>Vorrat, einmalig</span></div>
+      </div>
+
+      <div class="shop-group">
+        <h3>Frisch — jede Woche neu</h3>
+        ${SHOPPING.frisch.map(itemRow).join("")}
+      </div>
+
+      <div class="shop-group">
+        <h3>Vorrat — hält mehrere Wochen</h3>
+        ${SHOPPING.vorrat.map(itemRow).join("")}
+      </div>
+
+      <p class="own-stock">Nicht bei Migros: ${SHOPPING.eigenerVorrat.join(" · ")}</p>
+
+      <button class="reset-btn" id="reset-checks">Haken zurücksetzen</button>
+    `;
+
+    el.querySelectorAll('input[type="checkbox"]').forEach(box => {
+      box.addEventListener("change", () => {
+        const row = box.closest(".shop-item");
+        const id = row.dataset.id;
+        const state = loadChecked();
+        state[id] = box.checked;
+        saveChecked(state);
+        row.classList.toggle("checked", box.checked);
+      });
+    });
+
+    document.getElementById("reset-checks").addEventListener("click", () => {
+      saveChecked({});
+      renderShopping();
+    });
+  }
+
+  /* ---------------- Tabs ---------------- */
+
+  document.querySelectorAll("nav.tabs button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", "false"));
+      btn.setAttribute("aria-selected", "true");
+      document.querySelectorAll("section.view").forEach(s => s.classList.remove("active"));
+      document.getElementById(btn.dataset.view).classList.add("active");
+    });
+  });
+
+  renderRecipes();
+  renderShopping();
+</script>
+
+</body>
+</html>
